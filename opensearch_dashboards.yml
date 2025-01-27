@@ -21,10 +21,11 @@ opensearchDashboards.branding:
   #   defaultUrl: "https://cdn.icon-icons.com/icons2/2699/PNG/512/elasticco_kibana_logo_icon_169209.png"
   #   darkModeUrl: "https://cdn.icon-icons.com/icons2/2699/PNG/512/elasticco_kibana_logo_icon_169209.png"
   # faviconUrl: "https://cdn.worldvectorlogo.com/logos/elastic-kibana.svg"
+  
   applicationTitle: "Opensearch Billal"
 
 opensearch_security.auth.multiple_auth_enabled: true
-opensearch_security.auth.type: ["basicauth","openid"]
+opensearch_security.auth.type: ["basicauth","openid", "ldap"]
 opensearch_security.ui.openid.login.buttonname: Log in with Keycloak (OIDC)
 opensearch_security.openid.connect_url: "http://172.17.0.1:8080/realms/new/.well-known/openid-configuration"
 opensearch_security.openid.client_id: "opensearch"

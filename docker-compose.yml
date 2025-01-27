@@ -3,7 +3,7 @@ services:
   opensearch-oidc-node1:
     env_file:
       - .env
-    image: opensearchproject/opensearch:2.13.0
+    image: opensearchproject/opensearch:latest
     container_name: opensearch-oidc-node1
     environment:
       - cluster.name=opensearch-oidc-cluster
@@ -31,7 +31,7 @@ services:
   opensearch-dashboards:
     env_file:
       - .env
-    image: opensearchproject/opensearch-dashboards:2.13.0
+    image: opensearchproject/opensearch-dashboards:latest
     container_name: opensearch-dashboards
     volumes:
       - ./opensearch_dashboards.yml:/usr/share/opensearch-dashboards/config/opensearch_dashboards.yml
@@ -44,7 +44,7 @@ services:
         condition: service_healthy
 
   keycloak:
-    image: quay.io/keycloak/keycloak:21.1.1
+    image: quay.io/keycloak/keycloak:23.0.7
     container_name: keycloak
     environment:
       - KEYCLOAK_ADMIN=admin

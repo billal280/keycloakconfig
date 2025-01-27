@@ -3,7 +3,7 @@ _meta:
   config_version: 2
 
 admin:
-  hash: "$2a$12$e.zQZ7MzJZJ4bJgQsBzH8OB1A7.xO6yH/72V1uq7/QDdaBsB5FSOq" # password is: admin
+  hash: "$2a$12$e.zQZ7MzJZJ4bJgQsBzH8OB1A7.xO6yH/72V1uq7/QDdaBsB5FSOq" 
   reserved: true
   backend_roles:
     - "admin"

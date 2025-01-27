@@ -34,4 +34,5 @@ config:
             client_secret: "12345678901234567890123456789012"
         authentication_backend:
           type: "noop"
+      
 
