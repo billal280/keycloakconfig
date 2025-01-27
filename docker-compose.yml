@@ -1,0 +1,71 @@
+version: '3'
+services:
+  opensearch-oidc-node1:
+    env_file:
+      - .env
+    image: opensearchproject/opensearch:2.13.0
+    container_name: opensearch-oidc-node1
+    environment:
+      - cluster.name=opensearch-oidc-cluster
+      - node.name=opensearch-oidc-node1
+      - discovery.seed_hosts=opensearch-oidc-node1
+      - cluster.initial_master_nodes=opensearch-oidc-node1
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - opensearch-oidc-data1:/usr/share/opensearch/data
+      - ./config.yml:/usr/share/opensearch/config/opensearch-security/config.yml
+    ports:
+      - 9200:9200
+      - 9600:9600
+    networks:
+      - opensearch-net
+
+  opensearch-dashboards:
+    env_file:
+      - .env
+    image: opensearchproject/opensearch-dashboards:2.13.0
+    container_name: opensearch-dashboards
+    volumes:
+      - ./opensearch_dashboards.yml:/usr/share/opensearch-dashboards/config/opensearch_dashboards.yml
+    ports:
+      - 5601:5601
+    networks:
+      - opensearch-net
+    depends_on:
+      keycloak:
+        condition: service_healthy
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.1
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    volumes:
+      - ./new-realm.json:/opt/keycloak/data/import/new-realm.json
+      - ./keycloak-entrypoint.sh:/opt/keycloak/keycloak-entrypoint.sh
+    ports:
+      - 8080:8080
+    networks:
+      - opensearch-net
+    entrypoint: ["/opt/keycloak/keycloak-entrypoint.sh"]
+    healthcheck:
+      test: ["CMD", "sh", "-c", "exec 3<>/dev/tcp/localhost/8080; echo 'HTTP/1.1' >&3; head -1 <&3"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  opensearch-oidc-data1:
+
+networks:
+  opensearch-net:
+
